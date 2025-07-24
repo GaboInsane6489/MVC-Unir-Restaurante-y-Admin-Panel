@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include("partials/head") %>
+
+    <body class="bg-gray-100 p-8">
+
+        <h1 class="text-2xl font-bold mb-4">Restaurante – Home</h1>
+
+        <!-- Botón Crear orden (abre modal) -->
+        <button id="btn-open" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">
+            Crear orden
+        </button>
+
+        <!-- Enlace a gestionar -->
+        <a href="/manage" class="ml-4 text-blue-600 underline">Gestionar pedidos</a>
+
+        <!-- Modal oculto por defecto -->
+        <div id="modal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded w-[320px]">
+                <h2 class="text-xl font-semibold mb-4">Nueva orden</h2>
+                <form action="/orders" method="POST" class="space-y-3">
+                    <input name="tableNumber" type="number" placeholder="Nº Mesa" class="border p-2 w-full" required />
+                    <input name="time" type="time" class="border p-2 w-full" required />
+                    <input name="name" placeholder="Nombre cliente" class="border p-2 w-full" required />
+                    <textarea name="description" placeholder="Pedido" class="border p-2 w-full" required></textarea>
+                    <div class="text-right space-x-2">
+                        <button type="button" id="btn-close" class="px-3 py-1">Cancelar</button>
+                        <button class="bg-emerald-600 text-white px-3 py-1 rounded">
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            /* JS mínimo para abrir/cerrar modal */
+            // reto: que se cierre al hacer click fuera del modal
+            const modal = document.getElementById('modal');
+            document.getElementById('btn-open').onclick = () => modal.classList.remove('hidden');
+            document.getElementById('btn-close').onclick = () => modal.classList.add('hidden');
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "rest-mvc",
+  "version": "1.0.0",
+  "description": "Simulación de restaurante — proyecto didáctico MVC",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "Edinson Requena",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.0",
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
