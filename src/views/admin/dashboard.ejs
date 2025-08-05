@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+    <%- include("../partials/head") %>
+    <body class="flex flex-col h-full bg-gray-100 px-6 py-4">
+        <div class="flex justify-around mb-4 gap-4">
+            <a
+                href="/admin/menu"
+                class="text-xl text-blue-500 ml-2 hover:underline"
+            >
+                Ir al menú de platos
+            </a>
+            <a href="/" class="text-xl text-blue-500 ml-2 hover:underline">
+                Ir al inicio
+            </a>
+            <a
+                href="/manage"
+                class="text-xl text-blue-500 ml-2 hover:underline"
+            >
+                Gestionar Pedidos
+            </a>
+        </div>
+        <div class="flex flex-col justify-center items-center gap-2 my-auto">
+            <!-- PALETA DE COLORES
+        AZUL OSCURO: #2F4858
+        AZUL MEDIO: #33658A
+        AZUL CLARO: #86BBD8
+        AMARILLO: #F6AE2D
+        NARANJA: #F26419 -->
+            <h1
+                class="bg-gradient-to-r from-orange-500 to-amber-500 text-2xl font-bold text-center mb-4 px-6 py-2 rounded-md text-white"
+            >
+                Admin Dashboard
+            </h1>
+            <div>
+                <h2 class="text-2xl mb-4">Pedidos</h2>
+            </div>
+            <div
+                class="flex justify-center items-center bg-[#F26419] max-w-xl w-1/2 text-center h-24 rounded-md text-white font-medium"
+            >
+                <h3 class="text-2xl">Todo = <%= counts.todo %></h3>
+            </div>
+            <div
+                class="flex justify-center items-center bg-[#F6AE2D] max-w-xl w-1/2 text-center h-24 rounded-md text-white font-medium"
+            >
+                <h3 class="text-2xl">Done = <%= counts.done %></h3>
+            </div>
+            <div
+                class="flex justify-center items-center bg-[#86BBD8] max-w-xl w-1/2 text-center h-24 rounded-md text-white font-medium mb-6"
+            >
+                <h3 class="text-2xl">Delivered = <%= counts.delivered %></h3>
+            </div>
+
+            <form action="/admin/cleanup" method="POST" class="mb-4">
+                <button
+                    class="text-white font-medium px-4 py-2 bg-red-500 ml-2 rounded-md hover:bg-red-600"
+                    type="submit"
+                >
+                    Limpiar Entregados
+                </button>
+            </form>
+        </div>
+    </body>
+</html>

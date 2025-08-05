@@ -1,7 +1,7 @@
 {
   "name": "rest-mvc",
   "version": "1.0.0",
-  "description": "Simulación de restaurante — proyecto didáctico MVC",
+  "description": "Restaurante-Panel",
   "main": "src/app.js",
   "type": "module",
   "scripts": {

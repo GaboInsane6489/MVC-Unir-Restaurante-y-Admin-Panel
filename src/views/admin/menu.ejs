@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!-- PALETA DE COLORES
+        AZUL OSCURO: #2F4858
+        AZUL MEDIO: #33658A
+        AZUL CLARO: #33658A
+        AMARILLO: #F6AE2D
+        NARANJA: #F26419 -->
+<html lang="es" class="">
+    <%- include("../partials/head") %>
+    <body class="p-6 min-h-screen flex flex-col">
+        <div class="mb-5 flex justify-around">
+            <a
+                href="/admin/dashboard"
+                class="text-xl text-blue-500 ml-2 hover:underline"
+            >
+                Volver al Dashboard
+            </a>
+            <a href="/" class="text-xl text-blue-500 ml-2 hover:underline">
+                Ir al inicio
+            </a>
+            <a
+                href="/manage"
+                class="text-xl text-blue-500 ml-2 hover:underline"
+            >
+                Gestionar Pedidos
+            </a>
+        </div>
+        <div
+            class="flex justify-center items-center h-20 rounded-xl bg-gradient-to-r from-slate-700 to-sky-500 mb-5 mt-5"
+        >
+            <h1 class="font-bold text-4xl text-white">Menú de platos</h1>
+        </div>
+
+        <div
+            class="flex flex-col gap-8 justify-center grow bg-cyan-100 rounded-xl px-1.5"
+        >
+            <form
+                action="/admin/menu"
+                method="POST"
+                class="flex gap-2.5 pl-3.5 form-post"
+            >
+                <input
+                    name="name"
+                    type="text"
+                    placeholder="Nombre del plato"
+                    class="form-name border border-[#2F4858] outline-none bg-white p-2 rounded-md focus:border-[#33658A]"
+                />
+                <input
+                    name="price"
+                    type="number"
+                    placeholder="Precio"
+                    class="form-price border border-[#2F4858] outline-none bg-white p-2 rounded-md focus:border-[#33658A]"
+                />
+                <input
+                    type="submit"
+                    placeholder="Agregar"
+                    class="outline-none px-3.5 py-2 bg-[#33658A] text-white font-bold rounded-md cursor-pointer"
+                />
+            </form>
+
+            <div class="">
+                <h2 class="font-bold text-2xl text-sky-500 mb-3.5">
+                    Platos disponibles:
+                </h2>
+                <ul
+                    class="flex flex-col gap-2 items-center text-[#2F4858] font-medium text-xl"
+                >
+                    <% items.forEach((i) => { %>
+                    <li data-id="<%= i.id %>">
+                        <%= i.name %>: <%= i.price %>$
+
+                        <button
+                            data-id="<%= i.id %>"
+                            type="submit"
+                            class="btn-delete-plate px-3.5 py-1.5 rounded-full text-red-700 font-bold bg-red-200 ml-2 cursor-pointer"
+                        >
+                            X
+                        </button>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>
+
+        <script>
+            //Funcion para eliminar un plato creado
+            document.querySelectorAll(".btn-delete-plate").forEach((i) => {
+                i.onclick = async (e) => {
+                    e.preventDefault();
+                    const id = i.dataset.id;
+                    await fetch(`/admin/menu/delete/${id}`, {
+                        method: "DELETE",
+                    }).catch((err) => console.log(err));
+                    i.parentElement.remove();
+                };
+            });
+        </script>
+    </body>
+</html>
