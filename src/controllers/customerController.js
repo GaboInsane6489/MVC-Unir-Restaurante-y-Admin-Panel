@@ -1,15 +1,23 @@
 import Customer from "../models/customer.js";
 
+//Buscar o crear un cliente
 export const findOrCreateCustomer = async (name) => {
-  const nameCleaned = name.trim();
-  let customer = await Customer.findOne({ name: nameCleaned });
-  if (!customer) {
-    customer = await Customer.create({ name: nameCleaned }); // ← Falta await
-  }
-  return customer;
+    const nameClaned = name.trim(); // limpiar el nombre
+    let customer = await Customer.findOne({ name: nameClaned });
+
+    if (!customer) {
+        customer = Customer.create({ name: nameClaned });
+        return customer;
+    }
+    return customer;
 };
 
+// listar
 export const listCustomer = async (req, res) => {
-  const customers = await Customer.find().sort("name");
-  res.render("manage", { customers });
+    // let bodyC = req.body;
+
+    const customerItems = await Customer.find().sort("name");
+
+    return res.render("manage", { customerItems });
 };
+
