@@ -1,14 +1,12 @@
-// Importamos el enrutador de Express
 import { Router } from "express";
-const router = Router(); // ✅ Inicializado antes de usar
+const router = Router();
 
-/**************IMPORTS DE CUSTOMER CONTROLLER ************ */
-import {
-  listCustomer,
-  // deleteUser // ← pendiente
-} from "../controllers/customerController.js";
+/* ===================== 🧑‍💼 CUSTOMER ROUTES ===================== */
+import { listCustomer } from "../controllers/customerController.js";
 
-/**************IMPORTS DE ORDER CONTROLLER ************ */
+router.get("/manage", listCustomer);
+
+/* ===================== 📦 ORDER ROUTES ===================== */
 import {
   createOrder,
   updateStatus,
@@ -17,40 +15,29 @@ import {
   cleanupDelivered
 } from "../controllers/orderController.js";
 
-/**************IMPORTS DE MENU CONTROLLER ************ */
-import {
-  CreatePlate,
-  ListMenu,
-  selectMenu,
-  // deleteMenuItem // ← pendiente
-} from "../controllers/menuController.js";
-
-/**************IMPORTS DE DASHBOARD CONTROLLER ************ */
-import { renderDashboard } from "../controllers/dashboardController.js";
-
-/*------------------------------------------------------------------- */
-
-/************** HOME ROUTES ************ */
-router.get("/", (req, res) => res.render("home"));
-
-/************** ROUTES DE CUSTOMER ************ */
-router.get("/manage", listCustomer);
-
-/************** ROUTES DE ORDER ************ */
 router.post("/orders", createOrder);
 router.post("/orders/:id/status", updateStatus);
 router.post("/admin/cleanup", cleanupDelivered);
 router.get("/api/orders/customer/:id", listOrderByCustomer);
 
-/************** ROUTES DE MENU ************ */
+/* ===================== 🍽️ MENU ROUTES ===================== */
+import {
+  CreatePlate,
+  ListMenu,
+  selectMenu
+} from "../controllers/menuController.js";
+
 router.post("/admin/menu", CreatePlate);
-router.get("/api/menu", selectMenu);
 router.get("/admin/menu", ListMenu);
+router.get("/api/menu", selectMenu);
 
-/************** ROUTES DE DASHBOARD ************ */
-router.get("/admin/dashboard", renderDashboard); // ✅ corregido nombre del handler
+/* ===================== 📊 DASHBOARD ROUTES ===================== */
+import { renderDashboard } from "../controllers/dashboardController.js";
 
-/*------------------------------------------------------------------- */
+router.get("/admin/dashboard", renderDashboard);
+
+/* ===================== 🏠 HOME ROUTE ===================== */
+router.get("/", (req, res) => res.render("home"));
 
 export default router;
 

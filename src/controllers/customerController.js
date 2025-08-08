@@ -14,10 +14,13 @@ export const findOrCreateCustomer = async (name) => {
 
 // listar
 export const listCustomer = async (req, res) => {
-    // let bodyC = req.body;
+    try {
+        const customers = await Customer.find().sort("-createdAt");
 
-    const customerItems = await Customer.find().sort("name");
-
-    return res.render("manage", { customerItems });
+        res.render("manage", { customers }); // ← Aquí se pasa la variable a la vista
+    } catch (error) {
+        console.error("Error al listar clientes:", error);
+        res.status(500).send("Error al cargar la vista de gestión.");
+    }
 };
 

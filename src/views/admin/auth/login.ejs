@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include("partials/head") %>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded shadow-md w-[320px]">
+        <h1 class="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h1>
+
+        <form action="/admin/login" method="POST" class="space-y-4">
+            <input name="username" type="text" placeholder="Usuario" class="border p-2 w-full" required />
+            <input name="password" type="password" placeholder="Contraseña" class="border p-2 w-full" required />
+            <button class="bg-emerald-600 text-white px-4 py-2 rounded w-full hover:bg-emerald-700">
+                Entrar
+            </button>
+        </form>
+
+        <p class="mt-4 text-sm text-center text-gray-600">
+            ¿Olvidaste tu contraseña? <a href="/admin/reset" class="text-blue-600 underline">Recupérala</a>
+        </p>
+    </div>
+
+</body>
+</html>
