@@ -24,30 +24,45 @@
         <script>
             /* Cargar y pintar pedidos via fetch */
             document.querySelectorAll('.btn-show').forEach(btn => {
-                btn.onclick = async () => { // Asignamos un evento click a cada botón.
-                    const id = btn.dataset.id; // Obtenemos el _id del cliente desde el atributo data-id del botón.
-                    const res = await fetch(`/api/orders/customer/${id}`); // Hacemos una petición a la API para obtener las órdenes del cliente con ese _id.
-                    const orders = await res.json(); // Convertimos la respuesta a JSON.
-                    const container = document.getElementById('orders-' + id); // Obtenemos el contenedor donde se mostrarán las órdenes del cliente.
-                    container.innerHTML = ''; // Limpiamos el contenedor antes de mostrar las órdenes.
-                    orders.forEach(o => { // Iteramos sobre cada orden obtenida.
-                        const color = o.status === 'todo' ? 'bg-yellow-200' // Asignamos un color de fondo según el estado de la orden.
+                btn.onclick = async () => {
+                    try {
+                        const id = btn.dataset.id;
+                        const res = await fetch(`/api/orders/customer/${id}`);
+
+                        // ✅ Solo una vez
+                        const data = await res.json();
+
+                        const container = document.getElementById('orders-' + id);
+                        container.innerHTML = '';
+
+                        if (!data.success || !Array.isArray(data.orders)) {
+                            container.innerHTML = `<div class="text-red-500">No se encontraron órdenes para este cliente.</div>`;
+                            return;
+                        }
+
+                        data.orders.forEach(o => {
+                            const color = o.status === 'todo' ? 'bg-yellow-200'
                             : o.status === 'done' ? 'bg-blue-200'
-                                : 'bg-green-200';
-                        // Añadimos un div con la información de la orden al contenedor.
-                        container.innerHTML += `
-            <div class="${color} p-2 rounded flex justify-between items-center">
-                #${o._id.slice(-4)} — ${o.description} (${o.status})
-                <form action="/orders/${o._id}/status" method="POST">
-                <select name="status" class="border">
-                    <option ${o.status === 'todo' ? 'selected' : ''}>todo</option>
-                    <option ${o.status === 'done' ? 'selected' : ''}>done</option>
-                    <option ${o.status === 'delivered' ? 'selected' : ''}>delivered</option>
-                </select>
-                <button class="bg-gray-700 text-white px-2">✓</button>
-                </form>
-            </div>`;
-                    });
+                            : 'bg-green-200';
+
+                            container.innerHTML += `
+                                <div class="${color} p-2 rounded flex justify-between items-center">
+                                    #${o._id.slice(-4)} — ${o.description} (${o.status})
+                                    <form action="/orders/${o._id}/status" method="POST">
+                                        <select name="status" class="border">
+                                            <option ${o.status === 'todo' ? 'selected' : ''}>todo</option>
+                                            <option ${o.status === 'done' ? 'selected' : ''}>done</option>
+                                            <option ${o.status === 'delivered' ? 'selected' : ''}>delivered</option>
+                                        </select>
+                                        <button class="bg-gray-700 text-white px-2">✓</button>
+                                    </form>
+                                </div>
+                            `;
+                        });
+                    } catch (err) {
+                        console.error("Error al obtener órdenes:", err);
+                        alert("Hubo un problema al cargar las órdenes.");
+                    }
                 };
             });
         </script>

@@ -1,63 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="es">
     <%- include("../partials/head") %>
-    <body class="flex flex-col h-full bg-gray-100 px-6 py-4">
-        <div class="flex justify-around mb-4 gap-4">
-            <a
-                href="/admin/menu"
-                class="text-xl text-blue-500 ml-2 hover:underline"
-            >
-                Ir al menú de platos
-            </a>
-            <a href="/" class="text-xl text-blue-500 ml-2 hover:underline">
-                Ir al inicio
-            </a>
-            <a
-                href="/manage"
-                class="text-xl text-blue-500 ml-2 hover:underline"
-            >
-                Gestionar Pedidos
-            </a>
+    <body class="bg-gray-100 p-6">
+        <div class="mb-6 flex justify-between">
+            <a href="/" class="text-blue-500 hover:underline">Inicio</a>
+            <a href="/manage" class="text-blue-500 hover:underline">Gestión</a>
+            <a href="/admin/menu" class="text-blue-500 hover:underline">Menú</a>
         </div>
-        <div class="flex flex-col justify-center items-center gap-2 my-auto">
-            <!-- PALETA DE COLORES
-        AZUL OSCURO: #2F4858
-        AZUL MEDIO: #33658A
-        AZUL CLARO: #86BBD8
-        AMARILLO: #F6AE2D
-        NARANJA: #F26419 -->
-            <h1
-                class="bg-gradient-to-r from-orange-500 to-amber-500 text-2xl font-bold text-center mb-4 px-6 py-2 rounded-md text-white"
-            >
-                Admin Dashboard
-            </h1>
-            <div>
-                <h2 class="text-2xl mb-4">Pedidos</h2>
-            </div>
-            <div
-                class="flex justify-center items-center bg-[#F26419] max-w-xl w-1/2 text-center h-24 rounded-md text-white font-medium"
-            >
-                <h3 class="text-2xl">Todo = <%= counts.todo %></h3>
-            </div>
-            <div
-                class="flex justify-center items-center bg-[#F6AE2D] max-w-xl w-1/2 text-center h-24 rounded-md text-white font-medium"
-            >
-                <h3 class="text-2xl">Done = <%= counts.done %></h3>
-            </div>
-            <div
-                class="flex justify-center items-center bg-[#86BBD8] max-w-xl w-1/2 text-center h-24 rounded-md text-white font-medium mb-6"
-            >
-                <h3 class="text-2xl">Delivered = <%= counts.delivered %></h3>
-            </div>
 
-            <form action="/admin/cleanup" method="POST" class="mb-4">
-                <button
-                    class="text-white font-medium px-4 py-2 bg-red-500 ml-2 rounded-md hover:bg-red-600"
-                    type="submit"
-                >
-                    Limpiar Entregados
-                </button>
-            </form>
+        <h1 class="text-3xl font-bold text-center mb-6 text-[#F26419]">Admin Dashboard</h1>
+
+        <div class="grid grid-cols-3 gap-6 text-white font-bold text-xl">
+            <div class="bg-[#F26419] p-6 rounded-md text-center">
+                Por hacer: <%= counts.todo %>
+            </div>
+            <div class="bg-[#F6AE2D] p-6 rounded-md text-center">
+                Completadas: <%= counts.done %>
+            </div>
+            <div class="bg-[#86BBD8] p-6 rounded-md text-center">
+                Entregadas: <%= counts.delivered %>
+            </div>
         </div>
+
+        <form action="/admin/cleanup" method="POST" class="mt-8 text-center">
+            <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                Limpiar Entregadas
+            </button>
+        </form>
     </body>
 </html>

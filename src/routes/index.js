@@ -1,78 +1,58 @@
 // Importamos el enrutador de Express
 import { Router } from "express";
-
-import { Router } from "express"; //Solo para importar las rutas que nos da el framwork de express
+const router = Router(); // ✅ Inicializado antes de usar
 
 /**************IMPORTS DE CUSTOMER CONTROLLER ************ */
 import {
-    listCustomer,
-    // deleteUser DD
+  listCustomer,
+  // deleteUser // ← pendiente
 } from "../controllers/customerController.js";
-/*------------------------------------------------------------------- */
 
 /**************IMPORTS DE ORDER CONTROLLER ************ */
 import {
-    createOrder,
-    updateStatus,
-    listOrderByCustomer,
-    cleanupDelivered,
-    // deleteUserOrders, DD
+  createOrder,
+  updateStatus,
+  listOrders,
+  listOrderByCustomer,
+  cleanupDelivered
 } from "../controllers/orderController.js";
-/*------------------------------------------------------------------- */
 
 /**************IMPORTS DE MENU CONTROLLER ************ */
 import {
-    CreatePlate,
-    ListMenu,
-    selectMenu,
-    // deleteMenuItem, DD
+  CreatePlate,
+  ListMenu,
+  selectMenu,
+  // deleteMenuItem // ← pendiente
 } from "../controllers/menuController.js";
-/*------------------------------------------------------------------- */
 
 /**************IMPORTS DE DASHBOARD CONTROLLER ************ */
-import { renderDash } from "../controllers/dashboardController.js";
+import { renderDashboard } from "../controllers/dashboardController.js";
+
 /*------------------------------------------------------------------- */
 
-const router = Router();
+/************** HOME ROUTES ************ */
+router.get("/", (req, res) => res.render("home"));
 
-// Home routes
-router.get("/", (request, response) => response.render("home"));
-
-/**************ROUTES DE CUSTOMER ************ */
-//Manage routs
+/************** ROUTES DE CUSTOMER ************ */
 router.get("/manage", listCustomer);
-/*------------------------------------------------------------------- */
 
-/**************ROUTES DE ORDER ************ */
-//Crear orden
+/************** ROUTES DE ORDER ************ */
 router.post("/orders", createOrder);
-
-//cambiar estado
 router.post("/orders/:id/status", updateStatus);
-
-//Borrar los delivered
 router.post("/admin/cleanup", cleanupDelivered);
+router.get("/api/orders/customer/:id", listOrderByCustomer);
 
-//Listar ordenes del cliente
-router.get("/api/orders/:id", listOrderByCustomer);
-/*------------------------------------------------------------------- */
-
-/**************ROUTES DE MENU *************/
-//Crear platos
+/************** ROUTES DE MENU ************ */
 router.post("/admin/menu", CreatePlate);
-
-//Select
 router.get("/api/menu", selectMenu);
-
-//Listar los platos creados
 router.get("/admin/menu", ListMenu);
-/*------------------------------------------------------------------- */
 
-/**************ROUTES DE DASHBOARD ************ */
-//Ruta del admin
-router.get("/admin/dashboard", renderDash);
+/************** ROUTES DE DASHBOARD ************ */
+router.get("/admin/dashboard", renderDashboard); // ✅ corregido nombre del handler
+
 /*------------------------------------------------------------------- */
 
 export default router;
+
 
 
