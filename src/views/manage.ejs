@@ -1,71 +1,112 @@
 <!DOCTYPE html>
 <html lang="es">
-<%- include("partials/head") %>
+    <%- include("partials/head") %>
 
-    <body class="bg-gray-100 p-6">
-        <h1 class="text-2xl font-bold mb-4">Gestionar pedidos</h1>
-        <a href="/" class="text-blue-600 underline mb-4 inline-block">← Volver</a>
+    <body
+        class="min-h-screen p-6 text-gray-100 bg-fixed bg-cover bg-center"
+        style="background-image: url('https://images.unsplash.com/photo-1481833761820-0509d3217039?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZSUyMHdhbGxwYXBlcnxlbnwwfHwwfHx8MA%3D%3D');"
+    >
+        <!-- ✅ Capa de fondo para mejorar contraste -->
+        <div class="bg-gradient-to-br from-[#2F4858]/80 to-[#33658A]/80 backdrop-blur-sm p-6 rounded-xl shadow-lg">
 
-        <ul class="space-y-4">
-            <% customers.forEach(customer=> { %>
-                <li class="bg-white p-4 rounded shadow">
-                    <h2 class="font-semibold">
-                        <%= customer.name %>
-                    </h2>
-                    <button data-id="<%= customer._id %>" class="btn-show bg-sky-600 text-white px-3 py-1 rounded mt-2">
+            <!-- ✅ Título principal -->
+            <h1 class="text-3xl font-bold mb-6 text-[#F6AE2D] text-center animate-slide-down">📋 Gestionar pedidos</h1>
+            <a href="/" class="text-[#86BBD8] hover:underline mb-6 inline-block text-center block animate-fade-in">← Volver al inicio</a>
+
+            <!-- ✅ Lista de clientes -->
+            <ul class="space-y-6">
+                <% customers.forEach(customer => { %>
+                <li class="bg-white/90 p-5 rounded-xl shadow-md border border-gray-200 transition hover:scale-[1.01] duration-200 animate-bounce-in">
+                    <h2 class="text-lg font-semibold mb-2 text-[#2F4858]">👤 <%= customer.name %></h2>
+
+                    <button
+                        data-id="<%= customer._id %>"
+                        class="btn-show bg-[#F26419] hover:bg-[#d94f0f] transition text-white px-4 py-2 rounded shadow"
+                        aria-label="Ver pedidos de <%= customer.name %>"
+                    >
                         Ver pedidos
                     </button>
-                    <!-- Contenedor donde se insertarán las órdenes -->
-                    <div id="orders-<%= customer._id %>" class="mt-3 space-y-2"></div>
-                </li>
-            <% }) %>
-        </ul>
 
+                    <div id="orders-<%= customer._id %>" class="mt-4 space-y-3"></div>
+                </li>
+                <% }) %>
+            </ul>
+        </div>
+
+        <!-- ✅ Script para cargar pedidos -->
         <script>
-            /* Cargar y pintar pedidos via fetch */
             document.querySelectorAll('.btn-show').forEach(btn => {
                 btn.onclick = async () => {
                     try {
                         const id = btn.dataset.id;
                         const res = await fetch(`/api/orders/customer/${id}`);
-
-                        // ✅ Solo una vez
                         const data = await res.json();
-
                         const container = document.getElementById('orders-' + id);
                         container.innerHTML = '';
 
                         if (!data.success || !Array.isArray(data.orders)) {
-                            container.innerHTML = `<div class="text-red-500">No se encontraron órdenes para este cliente.</div>`;
+                            container.innerHTML = `
+                                <div class="text-red-500 font-medium animate-fade-in">
+                                    ⚠️ No se encontraron órdenes para este cliente.
+                                </div>`;
                             return;
                         }
 
                         data.orders.forEach(o => {
-                            const color = o.status === 'todo' ? 'bg-yellow-200'
-                            : o.status === 'done' ? 'bg-blue-200'
-                            : 'bg-green-200';
+                            const color =
+                                o.status === 'todo' ? 'bg-yellow-100 border-yellow-300' :
+                                o.status === 'done' ? 'bg-blue-100 border-blue-300' :
+                                'bg-green-100 border-green-300';
 
-                            container.innerHTML += `
-                                <div class="${color} p-2 rounded flex justify-between items-center">
-                                    #${o._id.slice(-4)} — ${o.description} (${o.status})
-                                    <form action="/orders/${o._id}/status" method="POST">
-                                        <select name="status" class="border">
-                                            <option ${o.status === 'todo' ? 'selected' : ''}>todo</option>
-                                            <option ${o.status === 'done' ? 'selected' : ''}>done</option>
-                                            <option ${o.status === 'delivered' ? 'selected' : ''}>delivered</option>
-                                        </select>
-                                        <button class="bg-gray-700 text-white px-2">✓</button>
-                                    </form>
+                        container.innerHTML += `
+                            <div class="${color} border p-3 rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 animate-fade-in animate-bounce-in">
+                                <div class="font-medium text-[#2F4858]">
+                                    🧾 #${o._id.slice(-4)} — ${o.description} <span class="text-sm text-gray-600">(${o.status})</span>
                                 </div>
-                            `;
-                        });
-                    } catch (err) {
-                        console.error("Error al obtener órdenes:", err);
-                        alert("Hubo un problema al cargar las órdenes.");
-                    }
-                };
-            });
-        </script>
-    </body>
+                                <form action="/orders/${o._id}/status" method="POST" class="flex items-center gap-2">
+                                    <select name="status" class="border rounded px-2 py-1">
+                                        <option ${o.status === 'todo' ? 'selected' : ''}>todo</option>
+                                        <option ${o.status === 'done' ? 'selected' : ''}>done</option>
+                                        <option ${o.status === 'delivered' ? 'selected' : ''}>delivered</option>
+                                    </select>
+                                    <button
+                                        class="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded"
+                                        aria-label="Actualizar estado"
+                                    >
+                                        ✓
+                                    </button>
+                                </form>
+                            </div>
+                        `;
+                    });
+                } catch (err) {
+                    console.error("Error al obtener órdenes:", err);
+                    alert("Hubo un problema al cargar las órdenes.");
+                }
+            };
+        });
+    </script>
 
+        <!-- ✅ Animaciones personalizadas -->
+        <style>
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes bounce-in {
+                0% { transform: scale(0.95); opacity: 0; }
+                50% { transform: scale(1.02); opacity: 0.8; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes slide-down {
+                from { transform: translateY(-50px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            .animate-fade-in { animation: fade-in 0.4s ease-out both; }
+            .animate-bounce-in { animation: bounce-in 0.4s ease-out both; }
+            .animate-slide-down { animation: slide-down 0.5s ease-out both; }
+        </style>
+    </body>
 </html>
+
+

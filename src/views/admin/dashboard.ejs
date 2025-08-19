@@ -1,31 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
-    <%- include("../partials/head") %>
-    <body class="bg-gray-100 p-6">
-        <div class="mb-6 flex justify-between">
-            <a href="/" class="text-blue-500 hover:underline">Inicio</a>
-            <a href="/manage" class="text-blue-500 hover:underline">Gestión</a>
-            <a href="/admin/menu" class="text-blue-500 hover:underline">Menú</a>
+  <%- include("../partials/head") %>
+
+  <body
+    class="min-h-screen p-6 text-gray-100 bg-fixed bg-cover bg-center"
+    style="background-image: url('https://images.unsplash.com/photo-1481833761820-0509d3217039?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZSUyMHdhbGxwYXBlcnxlbnwwfHwwfHx8MA%3D%3D');"
+  >
+    <!-- ✅ Capa de fondo para contraste -->
+    <div class="bg-[#2F4858]/80 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+
+      <!-- ✅ Navegación superior -->
+      <nav class="mb-6 flex justify-between text-sm font-medium text-[#F6AE2D] animate-slide-down">
+        <a href="/" class="hover:underline">🏠 Inicio</a>
+        <a href="/manage" class="hover:underline">📋 Gestión</a>
+        <a href="/admin/menu" class="hover:underline">🍽️ Menú</a>
+      </nav>
+
+      <!-- ✅ Título principal -->
+      <h1 class="text-4xl font-bold text-center mb-8 text-[#F26419] animate-bounce-in">
+        📊 Admin Dashboard
+      </h1>
+
+      <!-- ✅ Tarjetas de estado -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-white font-bold text-xl">
+        <div class="bg-[#F26419] p-6 rounded-xl text-center shadow-md animate-bounce-in">
+          Por hacer: <%= counts.todo %>
         </div>
-
-        <h1 class="text-3xl font-bold text-center mb-6 text-[#F26419]">Admin Dashboard</h1>
-
-        <div class="grid grid-cols-3 gap-6 text-white font-bold text-xl">
-            <div class="bg-[#F26419] p-6 rounded-md text-center">
-                Por hacer: <%= counts.todo %>
-            </div>
-            <div class="bg-[#F6AE2D] p-6 rounded-md text-center">
-                Completadas: <%= counts.done %>
-            </div>
-            <div class="bg-[#86BBD8] p-6 rounded-md text-center">
-                Entregadas: <%= counts.delivered %>
-            </div>
+        <div class="bg-[#F6AE2D] p-6 rounded-xl text-center shadow-md animate-bounce-in delay-100">
+          Completadas: <%= counts.done %>
         </div>
+        <div class="bg-[#86BBD8] p-6 rounded-xl text-center shadow-md animate-bounce-in delay-200">
+          Entregadas: <%= counts.delivered %>
+        </div>
+      </div>
 
-        <form action="/admin/cleanup" method="POST" class="mt-8 text-center">
-            <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                Limpiar Entregadas
-            </button>
-        </form>
-    </body>
+      <!-- ✅ Acción administrativa -->
+      <form action="/admin/cleanup" method="POST" class="mt-10 text-center animate-fade-in">
+        <button
+          class="bg-red-500 hover:bg-red-600 transition px-5 py-2 rounded-lg text-white font-semibold shadow-md"
+          aria-label="Limpiar órdenes entregadas"
+        >
+          🧹 Limpiar Entregadas
+        </button>
+      </form>
+    </div>
+
+    <!-- ✅ Animaciones personalizadas -->
+    <style>
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes bounce-in {
+        0% { transform: scale(0.95); opacity: 0; }
+        50% { transform: scale(1.02); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      @keyframes slide-down {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      .animate-fade-in { animation: fade-in 0.4s ease-out both; }
+      .animate-bounce-in { animation: bounce-in 0.5s ease-out both; }
+      .animate-slide-down { animation: slide-down 0.5s ease-out both; }
+      .delay-100 { animation-delay: 0.1s; }
+      .delay-200 { animation-delay: 0.2s; }
+    </style>
+  </body>
 </html>
+
+
