@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include("../partials/head") %>
+    <body   
+        class="min-h-screen p-6 text-[#2F4858] bg-fixed bg-cover bg-center"
+        style="background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=3000&q=80');"
+    >
+        <div class="bg-white/90 backdrop-blur-md p-6 rounded-xl shadow-xl max-w-3xl mx-auto animate-fade-in">
+            <!-- ✅ Título -->
+            <h1 class="text-3xl font-bold text-center mb-6 text-[#F26419] animate-bounce-in">
+                🧾 Tus órdenes
+            </h1>
+
+            <!-- ✅ Botón de regreso -->
+            <div class="text-center mb-6">
+                <a href="/" class="text-[#33658A] hover:underline text-sm animate-slide-down">← Volver al inicio</a>
+            </div>
+
+            <!-- ✅ Lista de órdenes -->
+            <% if (orders.length === 0) { %>
+                <p class="text-center text-gray-600 font-medium animate-fade-in">
+                    No tienes órdenes registradas aún.
+                </p>
+            <% } else { %>
+                <ul class="space-y-4">
+                    <% orders.forEach((order, idx) => { 
+                        const color =
+                        order.status === "todo" ? "bg-yellow-100 border-yellow-300" :
+                        order.status === "done" ? "bg-blue-100 border-blue-300" :
+                        "bg-green-100 border-green-300";
+                    %>
+                        <li
+                            class="<%= color %> border p-4 rounded-lg shadow-md animate-bounce-in delay-<%= idx * 100 %>"
+                        >
+                            <div class="font-semibold text-[#2F4858]">
+                                🪑 Mesa <%= order.tableNumber %> — <%= order.description %>
+                            </div>
+                            <div class="text-sm text-gray-700 mt-1">
+                                Estado: <strong><%= order.status %></strong>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">
+                                <%= new Date(order.createdAt).toLocaleString("es-VE") %>
+                            </div>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } %>
+        </div>
+
+        <!-- ✅ Animaciones personalizadas -->
+        <style>
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes bounce-in {
+                0% { transform: scale(0.95); opacity: 0; }
+                50% { transform: scale(1.02); opacity: 0.8; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes slide-down {
+                from { transform: translateY(-30px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            .animate-fade-in { animation: fade-in 0.5s ease-out both; }
+            .animate-bounce-in { animation: bounce-in 0.5s ease-out both; }
+            .animate-slide-down { animation: slide-down 0.4s ease-out both; }
+            .delay-100 { animation-delay: 0.1s; }
+            .delay-200 { animation-delay: 0.2s; }
+            .delay-300 { animation-delay: 0.3s; }
+            .delay-400 { animation-delay: 0.4s; }
+        </style>
+    </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+    <%- include("partials/head") %>
+    <body
+        class="min-h-screen flex items-center justify-center bg-cover bg-center text-[#2F4858]"
+        style="background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=3000&q=80');"
+    >
+        <div class="bg-white/90 backdrop-blur-md p-8 rounded-xl shadow-xl max-w-md text-center animate-fade-in">
+            <!-- ✅ Ícono y título -->
+            <div class="text-5xl mb-4 animate-bounce-in">🚫</div>
+            <h1 class="text-2xl font-bold text-[#F26419] mb-4">Acceso denegado</h1>
+
+            <!-- ✅ Mensaje explicativo -->
+            <p class="text-gray-700 mb-6">
+                No tienes permisos para acceder a esta sección. Si crees que esto es un error, contacta al administrador.
+            </p>
+
+            <!-- ✅ Botón de regreso -->
+            <a
+                href="/"
+                class="inline-block bg-[#33658A] hover:bg-[#2F4858] text-white font-semibold px-6 py-2 rounded transition animate-slide-up"
+            >
+                ← Volver al inicio
+            </a>
+        </div>
+
+        <!-- ✅ Animaciones personalizadas -->
+        <style>
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes bounce-in {
+                0% { transform: scale(0.95); opacity: 0; }
+                50% { transform: scale(1.02); opacity: 0.8; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes slide-up {
+                from { transform: translateY(30px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            .animate-fade-in { animation: fade-in 0.5s ease-out both; }
+            .animate-bounce-in { animation: bounce-in 0.5s ease-out both; }
+            .animate-slide-up { animation: slide-up 0.5s ease-out both; }
+        </style>
+    </body>
+</html>

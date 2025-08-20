@@ -1,18 +1,24 @@
 import User from "../models/User.js";
-import bcrypt  from "bcryptjs";
+import bcrypt from "bcryptjs";
 
-//mostrar formulario de login
+// Mostrar formulario de login
 export const showLogin = (req, res) => {
-    res.render("auth/login");
+    res.render("admin/auth/login");
 };
+
+// Mostrar formulario de registro
+export const showRegister = (req, res) => {
+    res.render("admin/auth/register");
+};
+
 
 // Procesar registro
 export const registerUser = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, password: hashedPassword });
+        const newUser = new User({ username, password: hashedPassword, role });
 
         await newUser.save();
         res.redirect("/login");
@@ -28,13 +34,23 @@ export const loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({ username });
-        if (!user) return res.status(401).send("Usuario no Encontrado");
+        if (!user) return res.status(401).send("Usuario no encontrado");
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(401).send("Contraseña incorrecta");
 
-        req.session.userId = user._id;
-        res.redirect("/dashboard");
+        req.session.user = {
+            id: user._id,
+            username: user.username,
+            role: user.role,
+        };
+
+        // Redirigir según el rol
+        if (user.role === "admin") {
+            res.redirect("/admin/dashboard");
+        } else {
+            res.redirect("/client/orders");
+        }
     } catch (error) {
         console.error("Error en login: ", error);
         res.status(500).send("Error al iniciar sesión");
@@ -47,9 +63,3 @@ export const logoutUser = (req, res) => {
         res.redirect("/login");
     });
 };
-
-// Mostrar formulario de registro
-export const showRegister = (req, res) => {
-    res.render("auth/register"); // Asegúrate de tener esta vista
-};
-

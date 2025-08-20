@@ -1,24 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
-<%- include("partials/head") %>
+    <%- include("../../partials/head") %>
+    <body
+        class="min-h-screen flex items-center justify-center bg-cover bg-center text-[#2F4858]"
+        style="background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=3000&q=80');"
+    >
+        <div class="bg-white/90 backdrop-blur-md p-8 rounded-xl shadow-xl w-full max-w-md animate-fade-in">
+            <h1 class="text-3xl font-bold text-center mb-6 text-[#F26419] animate-bounce-in">🔐 Iniciar sesión</h1>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+            <form action="/login" method="POST" class="space-y-4">
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Usuario"
+                    required
+                    class="w-full p-3 border border-[#2F4858] rounded-md focus:outline-none focus:border-[#F6AE2D]"
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    required
+                    class="w-full p-3 border border-[#2F4858] rounded-md focus:outline-none focus:border-[#F6AE2D]"
+                />
 
-    <div class="bg-white p-8 rounded shadow-md w-[320px]">
-        <h1 class="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h1>
+                <select
+                    name="role"
+                    required
+                    class="w-full p-3 border border-[#2F4858] rounded-md bg-white focus:outline-none focus:border-[#F6AE2D]"
+                >
+                    <option value="">Selecciona tu rol</option>
+                    <option value="admin">Administrador</option>
+                    <option value="client">Cliente</option>
+                </select>
 
-        <form action="/admin/login" method="POST" class="space-y-4">
-            <input name="username" type="text" placeholder="Usuario" class="border p-2 w-full" required />
-            <input name="password" type="password" placeholder="Contraseña" class="border p-2 w-full" required />
-            <button class="bg-emerald-600 text-white px-4 py-2 rounded w-full hover:bg-emerald-700">
-                Entrar
-            </button>
-        </form>
+                <button
+                    type="submit"
+                    class="w-full bg-[#F26419] hover:bg-[#d94f0f] text-white font-bold py-3 rounded-md transition"
+                >
+                    ➤ Entrar
+                </button>
+            </form>
 
-        <p class="mt-4 text-sm text-center text-gray-600">
-            ¿Olvidaste tu contraseña? <a href="/admin/reset" class="text-blue-600 underline">Recupérala</a>
-        </p>
-    </div>
+            <p class="mt-6 text-center text-sm text-gray-600">
+                ¿No tienes cuenta?
+                <a href="/register" class="text-[#33658A] hover:underline">Regístrate aquí</a>
+            </p>
+        </div>
 
-</body>
+        <style>
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes bounce-in {
+                0% { transform: scale(0.95); opacity: 0; }
+                50% { transform: scale(1.02); opacity: 0.8; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            .animate-fade-in { animation: fade-in 0.5s ease-out both; }
+            .animate-bounce-in { animation: bounce-in 0.5s ease-out both; }
+        </style>
+    </body>
 </html>
+

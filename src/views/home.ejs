@@ -2,11 +2,15 @@
 <html lang="es">
     <%- include("partials/head") %>
 
-    <body class="min-h-screen flex flex-col text-gray-100 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1481833761820-0509d3217039?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZSUyMHdhbGxwYXBlcnxlbnwwfHwwfHx8MA%3D%3D');">
-
+    <body
+        class="min-h-screen flex flex-col text-gray-100 bg-cover bg-center"
+        style="background-image: url('https://images.unsplash.com/photo-1481833761820-0509d3217039?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FmZSUyMHdhbGxwYXBlcnxlbnwwfHwwfHx8MA%3D%3D');"
+    >
         <!-- ✅ Navegación -->
         <nav class="bg-[#2F4858]/80 backdrop-blur-sm py-4 px-6 rounded-b-xl shadow-md animate-slide-down">
-            <h1 class="text-3xl font-bold text-center text-[#F6AE2D] tracking-wide animate-bounce-in">☕ Restaurante – Home</h1>
+            <h1 class="text-3xl font-bold text-center text-[#F6AE2D] tracking-wide animate-bounce-in">
+                ☕ Restaurante – Home
+            </h1>
         </nav>
 
         <!-- ✅ Contenido principal centrado -->
@@ -22,7 +26,27 @@
                     ➕ Crear orden
                 </button>
 
-                <!-- Gestionar pedidos -->
+                <!-- ✅ Opciones según sesión -->
+                <% if (!user) { %>
+                <!-- No autenticado -->
+                <form action="/logout" method="POST" class="text-center animate-slide-up">
+                    <button
+                        type="submit"
+                        class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
+                        aria-label="Cerrar sesión y volver al login"
+                    >
+                        🔒 Cerrar sesión
+                    </button>
+                </form>
+
+                <a
+                    href="/register"
+                    class="block text-[#86BBD8] hover:text-white font-semibold text-lg px-6 py-3 rounded transition bg-[#2F4858]/60 hover:bg-[#2F4858] shadow-md animate-zoom-in"
+                >
+                    📝 Registrarse
+                </a>
+                    <% } else if (user.role === "admin") { %>
+                    <!-- Administrador -->
                 <a
                     href="/manage"
                     class="block text-[#86BBD8] hover:text-white font-semibold text-lg px-6 py-3 rounded transition bg-[#2F4858]/60 hover:bg-[#2F4858] shadow-md animate-slide-left"
@@ -30,45 +54,53 @@
                     📋 Gestionar pedidos
                 </a>
 
-                <!-- Dashboard -->
                 <a
                     href="/admin/dashboard"
                     class="block text-[#F6AE2D] hover:text-white font-semibold text-lg px-6 py-3 rounded transition bg-[#2F4858]/60 hover:bg-[#2F4858] shadow-md animate-zoom-in"
                 >
                     📊 Dashboard
                 </a>
-            </div>
-        </main>
-
-        <!-- ✅ Modal -->
-        <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"
-            class="fixed inset-0 bg-black/60 flex items-center justify-center hidden z-50">
-            <div class="bg-white p-6 rounded-xl shadow-xl w-[360px] border border-gray-200 animate-fade-in">
-                <h2 id="modal-title" class="text-2xl font-bold mb-4 text-[#2F4858]">📝 Nueva orden</h2>
-                <form action="/orders" method="POST" class="space-y-4" role="form">
-                    <input name="tableNumber" type="number" placeholder="Nº Mesa" class="border p-2 w-full rounded" required />
-                    <input name="time" type="time" class="border p-2 w-full rounded" required />
-                    <input name="name" placeholder="Nombre cliente" class="border p-2 w-full rounded" required />
-                    <textarea name="description" placeholder="Pedido" class="border p-2 w-full rounded resize-none" required></textarea>
-                    <div class="text-right space-x-2">
-                        <button type="button" id="btn-close" class="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100">Cancelar</button>
-                        <button type="submit" class="bg-[#F26419] hover:bg-[#d94f0f] transition text-white px-4 py-2 rounded shadow">Guardar</button>
-                    </div>
-                </form>
-            </div>
+                <% } else if (user.role === "client") { %>
+                <!-- Cliente -->
+                <a
+                    href="/client/orders"
+                    class="block text-[#86BBD8] hover:text-white font-semibold text-lg px-6 py-3 rounded transition bg-[#2F4858]/60 hover:bg-[#2F4858] shadow-md animate-slide-left"
+                >
+                    🧾 Ver mis órdenes
+                </a>
+            <% } %>
         </div>
+    </main>
 
-        <!-- ✅ Footer -->
-        <footer class="bg-[#2F4858]/80 backdrop-blur-sm py-6 mt-auto text-center text-sm text-gray-100 animate-slide-up">
-            <p class="mb-2">Síguenos en redes:</p>
-            <div class="flex justify-center gap-6 text-2xl">
-                <a href="#" class="hover:text-[#F6AE2D] transition">🐦</a>
-                <a href="#" class="hover:text-[#F6AE2D] transition">📘</a>
-                <a href="#" class="hover:text-[#F6AE2D] transition">📸</a>
-                <a href="#" class="hover:text-[#F6AE2D] transition">🎥</a>
-            </div>
-            <p class="mt-4 text-xs text-gray-300">© 2025 Restaurante Premium</p>
-        </footer>
+    <!-- ✅ Modal -->
+    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"
+        class="fixed inset-0 bg-black/60 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-xl shadow-xl w-[360px] border border-gray-200 animate-fade-in">
+            <h2 id="modal-title" class="text-2xl font-bold mb-4 text-[#2F4858]">📝 Nueva orden</h2>
+            <form action="/orders" method="POST" class="space-y-4" role="form">
+                <input name="tableNumber" type="number" placeholder="Nº Mesa" class="border p-2 w-full rounded" required />
+                <input name="time" type="time" class="border p-2 w-full rounded" required />
+                <input name="name" placeholder="Nombre cliente" class="border p-2 w-full rounded" required />
+                <textarea name="description" placeholder="Pedido" class="border p-2 w-full rounded resize-none" required></textarea>
+                <div class="text-right space-x-2">
+                    <button type="button" id="btn-close" class="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100">Cancelar</button>
+                    <button type="submit" class="bg-[#F26419] hover:bg-[#d94f0f] transition text-white px-4 py-2 rounded shadow">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ Footer -->
+    <footer class="bg-[#2F4858]/80 backdrop-blur-sm py-6 mt-auto text-center text-sm text-gray-100 animate-slide-up">
+        <p class="mb-2">Síguenos en redes:</p>
+        <div class="flex justify-center gap-6 text-2xl">
+            <a href="#" class="hover:text-[#F6AE2D] transition">🐦</a>
+            <a href="#" class="hover:text-[#F6AE2D] transition">📘</a>
+            <a href="#" class="hover:text-[#F6AE2D] transition">📸</a>
+            <a href="#" class="hover:text-[#F6AE2D] transition">🎥</a>
+        </div>
+        <p class="mt-4 text-xs text-gray-300">© 2025 Restaurante Premium</p>
+    </footer>
 
         <!-- ✅ Script para modal -->
         <script>
@@ -126,5 +158,6 @@
         </style>
     </body>
 </html>
+
 
 
